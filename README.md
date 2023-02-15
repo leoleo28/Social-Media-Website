@@ -2,8 +2,12 @@
 Link to youtube demo:
 
 ### Overview
-This is a social media website built with django and python. It contains
-the functionality of creating, editing, deleting post, real-time chat, follow/ unfollow user, leaving comments and user authentication.
+This is a social media website built with django and python. It contains the following functionalities:
+* user authentication, login and logout
+* creating, editing, deleting posts and leaving comments on posts
+* follow/unfollow users
+* real-time chat with other users
+* follow recommendations and search other users 
 
 ### How to run the project?
 1. Clone or download this repository to your local machine.
