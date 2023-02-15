@@ -2,7 +2,7 @@
 Link to youtube demo:
 
 ### Overview
-This is a social media website built with django and python. It contains the following functionalities:
+This is a social media website built with Django, Python, JavaScript, CSS and HTML. It contains the following functionalities:
 * user authentication, login and logout
 * creating, editing, deleting posts and leaving comments on posts
 * follow/unfollow users
