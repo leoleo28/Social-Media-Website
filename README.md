@@ -1,5 +1,5 @@
 # Social Media Website
-Link to youtube demo:
+Link to youtube demo: [click here](https://www.youtube.com/watch?v=BzsNRuJaTI0)
 
 ### Overview
 This is a social media website built with Django, Python, JavaScript, CSS and HTML. It contains the following functionalities:
