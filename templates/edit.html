@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <title>Edit Post </title>
+        <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    </head>
+    <body style="background-color: blanchedalmond;">
+        <div style="width:40%; margin:20px auto 20px auto;">
+                <p style="color:black; font-size: 20px; margin-bottom: 10px;"> Edit Post</p>
+                <form action="" method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div>
+                    <div>                       
+                        <img width="300" height="300" src="{{cur_post.image.url}}" style="margin-bottom:10px;border-radius: 20px;" />
+                        <input type="file" name="image">
+                        <input type="hidden" name="curpost_id" value="{{cur_post.id}}">
+                    </div>
+                    <textarea class="button soft-warning small" name="caption" placeholder="{{cur_post.caption}}"  ></textarea>
+                    <br>
+                    <button class="button bg-blue-700" type="submit" >Upload</button>
+                </div>
+            </form>
+            <a href="profile/{{user}}"><button class="button bg-blue-700" style="margin-top: 10px;" >Return</button></a>
+        </div>
+    </body>
+</html>
