@@ -1,0 +1,182 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta name="viewpoint" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <title>Messaging</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css'>
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+  <style>
+  .chat_left{
+    box-sizing: border-box;
+    padding:10px;
+    margin:10px 5px 10px auto;
+    background: white;
+    color:black;
+    border-radius: 1.125rem 1.125rem 1.125rem 0;
+    min-height: 2.25rem;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 1000px;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.075), 0rem 1rem 1rem -1rem rgba(0, 0, 0, 0.1);
+  }
+
+  .chat_right{
+    box-sizing: border-box;
+    padding:10px;
+    margin:5px;
+    background: black;
+    color:white;
+    border-radius: 1.125rem 1.125rem 1.125rem 0;
+    min-height: 2.25rem;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 1000px;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.075), 0rem 1rem 1rem -1rem rgba(0, 0, 0, 0.1);
+  }
+
+  .outspace{
+    width:60%;
+    margin:auto;
+    display:flex;
+    padding:20px 0px;
+    justify-content: center;
+  }
+  .left_bar {
+      transition: transform 0.1s;
+      flex:none;
+  }
+  .left_bar :hover{
+    transform: translateY(-2px);
+  }
+  .leftbar{
+    flex:none;
+    width:200px;
+    border:solid 2px grey;
+    border-radius: 20px;
+  }
+  .rightbar{
+    width:auto;
+    border:2px solid grey;
+    border-radius: 15px;
+  }
+  input:focus {
+    outline:none;
+}
+  </style>
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="outspace">
+        <div class="leftbar" >
+            <h3 style="margin-left: 5px; text-align: center;">Contacts</h2>
+            <hr style="border: 1px solid grey;"/>
+            {% for c in all_contact_profile reversed %}
+              <div style="border:solid 2px rgb(229, 243, 229); border-radius: 20px; margin: 5px; background:rgb(229, 243, 229);"><a href="chat?with={{c.user.username}}" style="text-decoration: none;">
+                <div class="left_bar">
+                <div style="display: flex;align-items: center;">
+                  <div style="display:flex; flex:none; width:70px ;align-items: center;justify-content: center">
+                    <img src="{{c.profileimg.url}}" style="width:40px;height:40px ;border-radius: 50%;margin: 5px;" alt="Avatar"/>
+                  </div>
+                  <div style="flex:none; width:auto; color:black;  font-weight: 500;margin-bottom: 0.125rem;">
+                    {{c.user.username}}
+                  </div>
+                </div>
+                </div>
+              </a></div>
+            {% endfor %}  
+        </div>
+        <script>
+          $(document).ready(function(){
+          setInterval(function(){
+              $.ajax({
+                  type: 'GET',
+                  url : "/getmessage/{{chat_room.name}}/",
+                  success: function(response){
+                      console.log(response);
+                      $("#display").empty();
+                      
+                      for (var key in response.messages)
+                      {
+                          if (response.messages[key].user==response.cur_user){
+                            var temp="<div class='chat_left'>"+response.messages[key].value+"</div>";
+                            $("#display").append(temp);
+                          }
+                          else{
+                            var temp="<div class='chat_right'>"+response.messages[key].value+"</div>";
+                            $("#display").append(temp);
+                          }
+                          
+                      }
+                  },
+                  error: function(response){
+                      alert('An error occured')
+                  }
+              });
+          },1000);
+          })
+        </script>
+
+        <div class="rightbar" style="position: relative; width:500px">
+          <div class="chat">
+              <div>
+                <div style="display: flex;align-items: center;">
+                  <div style="display:flex; flex:none; width:70px ;align-items: center;justify-content: left;">
+                    <a href="profile/{{profile_chat_with.user.username}}"><img src="{{profile_chat_with.profileimg.url}}" style="width: 50px;height:50px ;border-radius: 50%; margin:5px" alt="Avatar"/></a>
+                  </div>
+                  <div style="flex:none; width:auto; color:black;  font-weight: 500;margin-bottom: 0.125rem;margin-left: 15px;">
+                    <a href="profile/{{profile_chat_with.user.username}}" style="text-decoration: none; color:black; font-weight: bold;">{{profile_chat_with.user.username}}</a>
+                  </div>
+                  <div style="color:black; margin:10px 10px 10px auto">
+                    <a href="/profile/{{profile_chat_with.user.username}}" style="text-decoration: none;"><div style="padding: 5px; border-radius: 30px; background-color:white; color:black; width:80px;text-align: center; font-size: 14px;"><strong>Return</strong></div></a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="messages" id="chat">
+                <div id="display"></div>
+              </div>
+              
+              <div class="input">
+                <form id="post-form" style="width:500px;">
+                  {% csrf_token %}
+                  <input type="hidden" name="username" id="username" value="{{username}}"/>
+                  <input type="hidden" name="person_chatwith" id="person_chatwith" value="{{profile_chat_with.user.username}}"/>
+                  <span><input type="text" name="message" id="message" placeholder="Type your message here!" style="width:320px" /></span>
+                  <span><input type="submit" value="Send" style="cursor: pointer;background: rgb(229, 243, 229) ;border:solid 2px  rgb(229, 243, 229)"></span>
+                </form>
+              </div>
+          </div>
+        </div>
+    </div>
+</body>
+
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/send',
+      data:{
+          username:$('#username').val(),
+          person_chatwith:$('#person_chatwith').val(),
+          message:$('#message').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+        //  alert(data)
+      }
+    });
+    document.getElementById('message').value = ''
+  });
+</script>
+
+
+</html>
