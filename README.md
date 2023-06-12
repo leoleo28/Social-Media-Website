@@ -1,13 +1,12 @@
 # Social Media Website
-Link to youtube demo: [click here](https://www.youtube.com/watch?v=BzsNRuJaTI0)
-
+* Link to youtube demo: [click here](https://www.youtube.com/watch?v=BzsNRuJaTI0)
+* Link to the website deployed on PythonAnywhere: [click here](http://leoproject.pythonanywhere.com)
 ### Overview
 This is a social media website built with Django, Python, JavaScript, CSS and HTML. It contains the following functionalities:
-* user authentication, login and logout
-* creating, editing, deleting posts and leaving comments on posts
-* follow/unfollow users
-* real-time chat with other users
-* follow recommendations and search other users 
+* Created a user authentication system for user registration, login, logout, and editing profiles
+* Created a social media platform that included features such as posting, liking, commenting, and following recommendation
+* Constructed a real-time chat application using Django and Ajax 
+
 
 ### How to run the project?
 1. Clone or download this repository to your local machine.
